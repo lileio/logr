@@ -82,7 +82,7 @@ func defaultLogger(ctx context.Context) FieldLogr {
 func (l *Logr) LogToTrace(level, msg string) {
 	span := opentracing.SpanFromContext(l.ctx)
 	if span != nil {
-		span.LogFields(log.String("logr: "+level, msg))
+		span.LogFields(log.String("event", msg))
 	}
 }
 
@@ -90,7 +90,7 @@ func (l *Logr) LogToTrace(level, msg string) {
 func (l *Logr) LogErrorToTrace(level, msg string) {
 	span := opentracing.SpanFromContext(l.ctx)
 	if span != nil {
-		span.LogFields(log.String("logr: "+level, msg))
+		span.LogFields(log.String("stack", msg))
 		span.SetTag("error", "true")
 	}
 }
