@@ -8,6 +8,7 @@ import (
 	opentracing "github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/log"
 	zipkintracing "github.com/openzipkin/zipkin-go-opentracing"
+	"github.com/sanity-io/litter"
 	"github.com/sirupsen/logrus"
 )
 
@@ -128,6 +129,15 @@ func (l *Logr) Errorf(format string, args ...interface{}) {
 func (l *Logr) Debug(args ...interface{}) {
 	l.LogToTrace("DEBUG", fmt.Sprint(args...))
 	l.Logger.Debug(args...)
+}
+
+func (l *Logr) DebugObject(name string, object interface{}) {
+	span := opentracing.SpanFromContext(l.ctx)
+	if span != nil {
+		span.LogFields(log.Object(name, object))
+	}
+
+	l.Logger.Debug(name + ": " + litter.Sdump(object))
 }
 
 func (l *Logr) Info(args ...interface{}) {
