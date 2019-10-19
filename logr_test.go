@@ -7,7 +7,7 @@ import (
 	"github.com/lileio/logr"
 	"github.com/lileio/logr/logrfakes"
 	opentracing "github.com/opentracing/opentracing-go"
-	zipkintracer "github.com/openzipkin/zipkin-go-opentracing"
+	"github.com/opentracing/opentracing-go/mocktracer"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
@@ -18,15 +18,10 @@ func TestLogr(t *testing.T) {
 }
 
 func TestLogrWithZipkinContext(t *testing.T) {
-	recorder := zipkintracer.NewInMemoryRecorder()
-	tracer, err := zipkintracer.NewTracer(recorder)
+	tracer := mocktracer.New()
 	opentracing.SetGlobalTracer(tracer)
 	span := tracer.StartSpan("test_logger")
 	ctx := opentracing.ContextWithSpan(context.Background(), span)
-
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	fl := &logrfakes.FakeFieldLogger{}
 	fl.WithFieldsReturns(logrus.WithFields(logrus.Fields{

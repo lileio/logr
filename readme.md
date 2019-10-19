@@ -1,6 +1,6 @@
 # Logr
 
-Logr is a simple helper for [Logrus](https://github.com/sirupsen/logrus) which helps wrap loggers to log [Opentracing](http://opentracing.io/) information (atm, just [Zipkin](https://zipkin.io/)).
+Logr is a simple helper for [Logrus](https://github.com/sirupsen/logrus) which helps wrap loggers to log [Opentracing](http://opentracing.io/) information.
 
 ### Example
 
